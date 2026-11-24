@@ -31,12 +31,19 @@ class _HomeState extends State<Home> {
   }
 
   void _calcular() {
-    setState(() {
-      double nota1 = double.parse(nota1Controller.text);
-      double nota2 = double.parse(nota2Controller.text);
-      double nota3 = double.parse(nota3Controller.text);
-      double nota4 = double.parse(nota4Controller.text);
+    double? nota1 = double.tryParse(nota1Controller.text);
+    double? nota2 = double.tryParse(nota2Controller.text);
+    double? nota3 = double.tryParse(nota3Controller.text);
+    double? nota4 = double.tryParse(nota4Controller.text);
 
+    if (nota1 == null || nota2 == null || nota3 == null || nota4 == null) {
+      setState(() {
+        _infoText = "Preencha todas as notas corretamente!";
+      });
+      return;
+    }
+
+    setState(() {
       double media = (nota1 + nota2 + nota3 + nota4) / 4;
 
       if (media == 5) {
@@ -47,7 +54,7 @@ class _HomeState extends State<Home> {
         _infoText = "Você ficou com MB. Foi aprovado com excelência!";
       } else {
         _infoText =
-            "Média: ${media.toStringAsFixed(2)}. Você ficou com I. Foi reprovado!";
+            "Média: ${media.toStringAsFixed(2)}. Resultado não classificado.";
       }
 
       print("Média: $media");
